@@ -148,6 +148,15 @@ echo "User: ${DB_USER}"
 echo "Port: ${DB_PORT}"
 echo ""
 
+# Optionally auto-apply migrations if present
+if [ -d "migrations" ] && [ -f "migrations/apply_migrations.sh" ]; then
+  echo "Applying database migrations..."
+  (cd migrations && bash apply_migrations.sh) || {
+    echo "⚠ Migration application failed. You can re-run manually:"
+    echo "   cd contract-insight-platform-1223/postgresql_database/migrations && ./apply_migrations.sh"
+  }
+fi
+
 echo "Environment variables saved to db_visualizer/postgres.env"
 echo "To use with Node.js viewer, run: source db_visualizer/postgres.env"
 
